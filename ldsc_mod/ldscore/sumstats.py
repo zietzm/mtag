@@ -217,14 +217,14 @@ def _check_ld_condnum(args, log, ref_ld):
 
 def _check_variance(log, M_annot, ref_ld):
     """Remove zero-variance LD Scores."""
-    ii = ref_ld.ix[:, 1:].var() == 0  # NB there is a SNP column here
+    ii = ref_ld.iloc[:, 1:].var() == 0  # NB there is a SNP column here
     if ii.all():
         raise ValueError("All LD Scores have zero variance.")
     else:
         log.log("Removing partitioned LD Scores with zero variance.")
         ii_snp = np.array([True] + list(~ii))
         ii_m = np.array(~ii)
-        ref_ld = ref_ld.ix[:, ii_snp]
+        ref_ld = ref_ld.iloc[:, ii_snp]
         M_annot = M_annot[:, ii_m]
 
     return M_annot, ref_ld, ii
@@ -302,7 +302,7 @@ def cell_type_specific(args, log):
         chisq_max = args.chisq_max
 
     ii = np.ravel(sumstats.Z**2 < chisq_max)
-    sumstats = sumstats.ix[ii, :]
+    sumstats = sumstats.iloc[ii, :]
     log.log(
         "Removed {M} SNPs with chi^2 > {C} ({N} SNPs remain)".format(
             C=chisq_max, N=np.sum(ii), M=n_snp - np.sum(ii)
@@ -329,7 +329,7 @@ def cell_type_specific(args, log):
         )
         log.log("Performing regression.")
         ref_ld_cts = np.array(
-            pd.merge(keep_snps, ref_ld_cts_allsnps, on="SNP", how="left").ix[:, 1:]
+            pd.merge(keep_snps, ref_ld_cts_allsnps, on="SNP", how="left").iloc[:, 1:]
         )
         if np.any(np.isnan(ref_ld_cts)):
             raise ValueError(
@@ -399,7 +399,7 @@ def estimate_h2(args, log):
     chisq = s(sumstats.Z**2)
     if chisq_max is not None:
         ii = np.ravel(chisq < chisq_max)
-        sumstats = sumstats.ix[ii, :]
+        sumstats = sumstats.iloc[ii, :]
         log.log(
             "Removed {M} SNPs with chi^2 > {C} ({N} SNPs remain)".format(
                 C=chisq_max, N=np.sum(ii), M=n_snp - np.sum(ii)
