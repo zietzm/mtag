@@ -811,7 +811,7 @@ def extract_gwas_sumstats(DATA, args, t0):
     Fs: matrix of allele frequencies
     """
     n_cols = ["N" + str(p) for p in t0]
-    Ns = DATA.filter(items=n_cols).as_matrix()
+    Ns = DATA.filter(items=n_cols).values
 
     # Apply sample-size specific filters
 
@@ -887,13 +887,13 @@ def extract_gwas_sumstats(DATA, args, t0):
     DATA = DATA[N_passFilter].reset_index()
     N_raw = np.copy(Ns)
     f_cols = ["FRQ" + str(p) for p in t0]
-    Fs = DATA.filter(items=f_cols).as_matrix()
+    Fs = DATA.filter(items=f_cols).values
 
     if args.use_beta_se:
         beta_cols = ["BETA" + str(p) for p in t0]
         se_cols = ["SE" + str(p) for p in t0]
-        BETAs = DATA.filter(items=beta_cols).as_matrix()
-        SEs = DATA.filter(items=se_cols).as_matrix()
+        BETAs = DATA.filter(items=beta_cols).values
+        SEs = DATA.filter(items=se_cols).values
 
         # standardizing factor
         std_factor = np.sqrt(2 * Fs * (1 - Fs))
@@ -902,7 +902,7 @@ def extract_gwas_sumstats(DATA, args, t0):
         Ns = 1 / np.square(SEs)
     else:
         z_cols = ["Z" + str(p) for p in t0]
-        Zs = DATA.filter(items=z_cols).as_matrix()
+        Zs = DATA.filter(items=z_cols).values
 
     assert Zs.shape[1] == Ns.shape[1] == Fs.shape[1]
 
