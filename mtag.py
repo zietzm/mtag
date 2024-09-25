@@ -40,15 +40,6 @@ header += "<> All other correspondence: paturley@broadinstitute.org \n"
 header += borderline + "\n"
 header += "\n\n"
 
-pd.set_option("display.max_rows", 500)
-pd.set_option("display.width", 800)
-pd.set_option("precision", 12)
-pd.set_option("max_colwidth", 800)
-pd.set_option("colheader_justify", "left")
-
-np.set_printoptions(linewidth=800)
-np.set_printoptions(precision=3)
-
 DEFAULT_MEDIAN_Z_THRESHOLD = 0.1
 
 
