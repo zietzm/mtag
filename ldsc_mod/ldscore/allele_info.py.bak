@@ -1,5 +1,4 @@
 import itertools as it
-from functools import reduce
 '''
 Contains useful objects related to allele relationships for ../munge_sumstats/py and sumstats.py
 
@@ -9,20 +8,20 @@ _N_CHR = 22
 # complementary bases
 COMPLEMENT = {'A': 'T', 'T': 'A', 'C': 'G', 'G': 'C'}
 # bases
-BASES = list(COMPLEMENT.keys())
+BASES = COMPLEMENT.keys()
 # true iff strand ambiguous
 STRAND_AMBIGUOUS = {''.join(x): x[0] == COMPLEMENT[x[1]]
                     for x in it.product(BASES, BASES)
                     if x[0] != x[1]}
 # SNPS we want to keep (pairs of alleles)
-VALID_SNPS = {x for x in [''.join(y) for y in it.product(BASES, BASES)]
+VALID_SNPS = {x for x in map(lambda y: ''.join(y), it.product(BASES, BASES))
               if x[0] != x[1] and not STRAND_AMBIGUOUS[x]}
 
-VALID_andSA_SNPS = {x for x in [''.join(y) for y in it.product(BASES, BASES)]
+VALID_andSA_SNPS = {x for x in map(lambda y: ''.join(y), it.product(BASES, BASES))
               if x[0] != x[1]}
 
 # T iff SNP 1 has the same alleles as SNP 2 (allowing for strand or ref allele flip).
-MATCH_ALLELES = {x for x in [''.join(y) for y in it.product(VALID_SNPS, VALID_SNPS)]
+MATCH_ALLELES = {x for x in map(lambda y: ''.join(y), it.product(VALID_SNPS, VALID_SNPS))
                  # strand and ref match
                  if ((x[0] == x[2]) and (x[1] == x[3])) or
                  # ref match, strand flip

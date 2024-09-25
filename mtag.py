@@ -1,11 +1,8 @@
 import argparse
-import bz2
-import gzip
 import itertools
 import logging
 import os
 import re
-import sys
 import time
 import warnings
 from argparse import Namespace
